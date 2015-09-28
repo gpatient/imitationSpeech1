@@ -7,32 +7,40 @@
  import Biquad from 'opendsp/biquad';
  
  
-var vcf = new Biquad('bpf');
+var vcf =[];
+var i=0;
+for(i=0;i<5;i++){
+  vcf[i]=new Biquad('bpf');
+  vcf[i].cut(700) .res(15).gain(3).update(); 
+}
 
-
-vcf
-  .cut(700) 
-  .res(15)
-  .gain(3)
-  .update();
-  
-
-function filterBank(snd)
+function filterBank(snd,fn)
 {
   var out=0;
   var oo=[];
+  // vowel a
   var ff=[650, 1080, 2650, 2900, 3250];
   var am=[ 1, 0.50118723362727, 0.44668359215096, 0.3981071705535, 0.079432823472428 ];
   var bw=[ 10, 12.777777777778, 24.166666666667, 30, 35.357142857143 ];
-  //var bw=[ 0.1, 0.078260869565217, 0.041379310344828, 0.033333333333333, 0.028282828282828 ];
+  if(fn==1){//vowel i
+    ff=[290, 1870, 2800, 3250, 3540];
+    am=[ 1, 0.17782794100389, 0.12589254117942, 0.1, 0.031622776601684 ];
+    bw=[ 7.25, 20.777777777778, 28, 27.083333333333, 29.5 ];
+  }
+  else if(fn==2){// vowel e
+    ff=[400, 1700, 2600, 3200, 3580];
+    am=[ 1, 0.19952623149689, 0.25118864315096, 0.19952623149689, 0.1 ];
+    bw=[ 5.7142857142857, 21.25, 26, 26.666666666667, 29.833333333333 ];
+  
+  }
   //q= cut/bw  res
   for(i=0;i<5;i++){
-    vcf.cut(ff[i]).res(bw[i]);
-    oo[i] = vcf.update().run(snd)*am[i];
+    vcf[i].cut(ff[i]).res(bw[i]).update();
+    oo[i] = vcf[i].update().run(snd)*am[i];
     out+=oo[i];
     
   }
-  return out*300;
+  return out*3;
   
 }
 
@@ -70,7 +78,7 @@ var fr=130000;
 export function dsp(t) {
   var i;
   for(i=0;i<10;i++)
-  arr[i]=Math.abs(400*lfNoise(t,fr,i))+100;
+  arr[i]=Math.abs(700*lfNoise(t,fr,i))+100;
   //fr+=1;
   //if(fr>150000)fr=30000;
 /*  
@@ -87,13 +95,14 @@ export function dsp(t) {
   mm=Math.sin(tau*t*arr[3]+mm2*4);
   snd1=Math.sin(tau*t*arr[4]+mm)*Math.sin(t*tau/2)*0.3;
 
-  vv1=Math.sin(tau*t*arr[6]/500)*20.3+Math.sin(tau*t*arr[7]/400)*50; 
-  snd2=Math.sin(tau*t*arr[5])*Math.sin(t*tau/2*arr[7]/200+vv1)*0.3; 
+  vv1=Math.sin(tau*t*arr[6]/800)*20.3+Math.sin(tau*t*arr[7]/700)*50; 
+  snd2=Math.sin(tau*t*arr[5])*Math.sin(t*tau/2*arr[7]/300+vv1)*0.3; 
 
   //if(snd1!=0)
   //snd=Math.random()*0.3*snd1*snd2;
-  snd=(snd1*(snd2-0.0013))*5;
-  snd=filterBank(snd);
+  snd=snd1*(snd1*(snd2-0.0013))*5;
+  //snd=Math.random()*0.6;
+  snd=filterBank(snd,Math.floor(arr[8]/330))*3;
   //snd=lfNoise(t,70000,0);;
   return snd;
 }
