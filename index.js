@@ -24,6 +24,7 @@ function filterBank(snd)
   var ff=[650, 1080, 2650, 2900, 3250];
   var am=[ 1, 0.50118723362727, 0.44668359215096, 0.3981071705535, 0.079432823472428 ];
   var bw=[ 10, 12.777777777778, 24.166666666667, 30, 35.357142857143 ];
+  //var bw=[ 0.1, 0.078260869565217, 0.041379310344828, 0.033333333333333, 0.028282828282828 ];
   //q= cut/bw  res
   for(i=0;i<5;i++){
     vcf.cut(ff[i]).res(bw[i]);
@@ -31,7 +32,7 @@ function filterBank(snd)
     out+=oo[i];
     
   }
-  return out;
+  return out*300;
   
 }
 
@@ -64,14 +65,14 @@ function lfNoise(t,freq,num)
   return lat1[num].run(t,Math.random());
 }
 var arr=[];
-var fr=30000;
+var fr=130000;
 
 export function dsp(t) {
   var i;
   for(i=0;i<10;i++)
   arr[i]=Math.abs(400*lfNoise(t,fr,i))+100;
-  fr+=1;
-  if(fr>150000)fr=30000;
+  //fr+=1;
+  //if(fr>150000)fr=30000;
 /*  
   mm3=Math.sin(tau*t*240)*Math.sin(t*tau/2*1.63*450)*0.3;
   mm2=Math.sin(tau*t*240+mm3*2)*Math.sin(t*tau/2*2)*0.3;
