@@ -2,8 +2,29 @@
 /**
  * @name imitationSpeech1
  * @arthor gpatient
- * @version 0.01
+ * @version 0.011
  */
+ import biquad from 'opendsp/biquad';
+ 
+ 
+var vcf = new Biquad('bpf');
+var osc = Saw();
+
+vcf
+  .cut(700)
+  .res(15)
+  .gain(3)
+  .update();
+  
+
+function filterBank(snd)
+{
+  var out;
+  
+  out = vcf.update().run(snd);
+  return out;
+  
+}
 
 var tau=3.141592*2;
 var snd=0,snd2=0,snd1,mm,mm2=0,mm3,vv1=0;
@@ -62,6 +83,7 @@ export function dsp(t) {
   //if(snd1!=0)
   //snd=Math.random()*0.3*snd1*snd2;
   snd=(snd1*(snd2-0.0013))*5;
+  //snd=filterBank(snd);
   //snd=lfNoise(t,70000,0);;
   return snd;
 }
