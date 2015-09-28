@@ -2,16 +2,16 @@
 /**
  * @name imitationSpeech1
  * @arthor gpatient
- * @version 0.011
+ * @version 0.021
  */
- import biquad from 'opendsp/biquad';
+ import Biquad from 'opendsp/biquad';
  
  
 var vcf = new Biquad('bpf');
-var osc = Saw();
+
 
 vcf
-  .cut(700)
+  .cut(700) 
   .res(15)
   .gain(3)
   .update();
@@ -19,9 +19,18 @@ vcf
 
 function filterBank(snd)
 {
-  var out;
-  
-  out = vcf.update().run(snd);
+  var out=0;
+  var oo=[];
+  var ff=[650, 1080, 2650, 2900, 3250];
+  var am=[ 1, 0.50118723362727, 0.44668359215096, 0.3981071705535, 0.079432823472428 ];
+  var bw=[ 10, 12.777777777778, 24.166666666667, 30, 35.357142857143 ];
+  //q= cut/bw  res
+  for(i=0;i<5;i++){
+    vcf.cut(ff[i]).res(bw[i]);
+    oo[i] = vcf.update().run(snd)*am[i];
+    out+=oo[i];
+    
+  }
   return out;
   
 }
@@ -83,7 +92,7 @@ export function dsp(t) {
   //if(snd1!=0)
   //snd=Math.random()*0.3*snd1*snd2;
   snd=(snd1*(snd2-0.0013))*5;
-  //snd=filterBank(snd);
+  snd=filterBank(snd);
   //snd=lfNoise(t,70000,0);;
   return snd;
 }
