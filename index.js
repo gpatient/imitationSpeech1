@@ -5,7 +5,8 @@
  * @version 0.021
  */
  import Biquad from 'opendsp/biquad';
- 
+ import dbg from 'debug';
+dbg('arrtest ')([[2,3,4],[3,4]][1]);
  
 var vcf =[];
 var i=0;
@@ -14,7 +15,7 @@ for(i=0;i<5;i++){
   vcf[i].cut(700) .res(15).gain(3).update(); 
 }
 
-function filterBank(snd,fn)
+function filterBank(snd,fn,mm)
 {
   var out=0;
   var oo=[];
@@ -35,7 +36,7 @@ function filterBank(snd,fn)
   }
   //q= cut/bw  res
   for(i=0;i<5;i++){
-    vcf[i].cut(ff[i]).res(bw[i]).update();
+    vcf[i].cut(ff[i]+mm).res(bw[i]*(mm/100+1)).update();
     oo[i] = vcf[i].update().run(snd)*am[i];
     out+=oo[i];
     
@@ -78,9 +79,9 @@ var fr=130000;
 export function dsp(t) {
   var i;
   for(i=0;i<10;i++)
-  arr[i]=Math.abs(700*lfNoise(t,fr,i))+100;
-  //fr+=1;
-  //if(fr>150000)fr=30000;
+  arr[i]=Math.abs(500*lfNoise(t,fr,i))+100;
+  fr+=1;
+  if(fr>150000)fr=30000;
 /*  
   mm3=Math.sin(tau*t*240)*Math.sin(t*tau/2*1.63*450)*0.3;
   mm2=Math.sin(tau*t*240+mm3*2)*Math.sin(t*tau/2*2)*0.3;
@@ -102,7 +103,7 @@ export function dsp(t) {
   //snd=Math.random()*0.3*snd1*snd2;
   snd=snd1*(snd1*(snd2-0.0013))*5;
   //snd=Math.random()*0.6;
-  snd=filterBank(snd,Math.floor(arr[8]/330))*3;
+  snd=filterBank(snd,Math.floor(arr[8]/270),snd2*150)*4;
   //snd=lfNoise(t,70000,0);;
   return snd;
 }
