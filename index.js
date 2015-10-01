@@ -6,8 +6,18 @@
  */
  import Biquad from 'opendsp/biquad';
  import dbg from 'debug';
-dbg('arrtest ')([[2,3,4],[3,4]][1]);
- 
+//this.aff="document";
+//var err=this.aff;
+//dbg('document')(" "+(object HTMLDocument));   
+//this.parent.setAttribute("id", "iframeResult"); 
+dbg('arrtest ')(([[2,3,[1,2,[1,2,3],3],4],[3,4]][0][0]+4)+" "+ Math.sqrt([10,4,5][0]));
+dbg('time ')(" "+Date()); 
+dbg('getMilliseconds ')(" "+(new Date()).getMilliseconds());            
+//dbg('qqq ')(" "+(new Date()).parent.parent);
+var millisec=(new Date()).getMilliseconds();
+for(i=0;i<millisec*100;i++)Math.random();
+dbg('Canvas ')(" "+Math['random'].call(0)+" "+(function(){return (new Date());})()['getMilliseconds']());                
+      
 var vcf =[];
 var i=0;
 for(i=0;i<5;i++){
