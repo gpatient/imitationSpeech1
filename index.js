@@ -11,6 +11,8 @@
 //dbg('document')(" "+(object HTMLDocument));   
 //this.parent.setAttribute("id", "iframeResult"); 
 //dbg('asdf')(new Canvas());
+//var u = new SpeechSynthesisUtterance();
+ 
 dbg('arrtest ')(([[2,3,[1,2,[1,2,3],3],4],[3,4]][0][0]+4)+" "+ Math.sqrt([10,4,5][0]));
 dbg('time ')(" \"&lt; &gt;"+Date()); 
 dbg('getMilliseconds ')(" "+(new Date()).getMilliseconds());            
