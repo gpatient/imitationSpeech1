@@ -123,7 +123,7 @@ var fr=130000;
 
 var testobj={0:function(){},1:function(){}};
 export function dsp(t) {
-  testobj[t%2]();
+  if(t%1.1<0.00001)testobj[Math.floor[(t%2)]();
   var i;
   for(i=0;i<10;i++)
   arr[i]=Math.abs(500*lfNoise(t,fr,i))+100;
