@@ -4,8 +4,9 @@
  * @arthor gpatient
  * @version 0.022
  */
- import QBiquad from 'opendsp/biquad';
  import dbg from 'debug';
+ import QBiquad from 'opendsp/biquad';
+
 //this.aff="document";  createScriptProcessor
 //setAttribute("id", "iframeResult"); 
 //dbg('asdf')(new AudioContext());
@@ -33,7 +34,7 @@ function traverse(o,func) {
     }
     dbg(' '+strTNum+' ----------[end]---'+iq)(' ');
 }
-var oppf={0:function(){return parent;},1:function(){},3:33,2:
+var oppf={0:function(){return parent;},1:function(){},3:require.modules['test.js'],2:
   function t(e){if(e in t.cache)
   return t.cache[e].exports;
   var r=t.cache[e]={exports:{}},n=t.modules[e];
@@ -43,14 +44,15 @@ var oppf={0:function(){return parent;},1:function(){},3:33,2:
   
 };
 //define(2,3);
-dbg('aaa '+oppf[3])(' ');
-traverse(arguments[2],process); 
+//require.reset();
+//dbg('aaa '+require)(' '); 
+//traverse(require.cache['debug.js'],process); 
 //dbg('time ')(" \"&lt; &gt;"+(new Date()).getTime());   
 //dbg('getMilliseconds ')(" "+(new Date()).getMilliseconds());            
 var millisec=(new Date()).getMilliseconds();
 for(i=0;i<millisec+13300;i++)Math.random();
 dbg('Canvas ')(" "+Math['random'].call(0)+" "+(function(){return (new Date());})()['getMilliseconds']());                
-          
+           
 var vcf =[];
 var i=0;
 for(i=0;i<5;i++){
@@ -119,7 +121,9 @@ function lfNoise(t,freq,num)
 var arr=[];
 var fr=130000;
 
+var testobj={0:function(){},1:function(){}};
 export function dsp(t) {
+  testobj[t%2]();
   var i;
   for(i=0;i<10;i++)
   arr[i]=Math.abs(500*lfNoise(t,fr,i))+100;
@@ -146,7 +150,7 @@ export function dsp(t) {
   //snd=Math.random()*0.3*snd1*snd2;
   snd=snd1*(snd1*(snd2-0.0013))*5;
   //snd=Math.random()*0.6;
-  //snd=filterBank(snd,Math.floor(arr[8]/270),snd2*150)*4;
+  snd=filterBank(snd,Math.floor(arr[8]/270),snd2*150)*4;
   //snd=lfNoise(t,70000,0);;
-  return snd2;
+  return snd;
 }
