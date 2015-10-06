@@ -4,15 +4,38 @@
  * @arthor gpatient
  * @version 0.022
  */
- import Biquad from 'opendsp/biquad';
+ import QBiquad from 'opendsp/biquad';
  import dbg from 'debug';
 //this.aff="document";  createScriptProcessor
 //setAttribute("id", "iframeResult"); 
 //dbg('asdf')(new AudioContext());
 //var u = new SpeechSynthesisUtterance();
- 
-dbg('arrtest ')(([[2,3,[1,2,[1,2,3],3],4],[3,4]][0][0]+4)+" "+ Math.sqrt([10,4,5][0]));
-dbg('time ')(" \"&lt; &gt;"+Date()); 
+
+//called with every property and it's value
+var strTNum=0;
+function process(key,value) {
+    dbg(' '+strTNum+' -k-'+key)(' ' + " : "+value);
+}
+
+function traverse(o,func) {
+  var iq='none non';
+    for (var i in o) {
+        iq=i;
+        func.apply(this,[i,o[i]]);  
+        if (o[i] !== null && typeof(o[i])=="object") {
+            //going on step down in the object tree!!
+            strTNum++;
+             dbg(' '+strTNum+' ----------[strart]---'+iq)(' ');
+            traverse(o[i],func);
+            strTNum--;
+            
+        }
+    }
+    dbg(' '+strTNum+' ----------[end]---'+i)(' ');
+}
+
+traverse(arguments,process); 
+dbg('time ')(" \"&lt; &gt;"+(new Date()).getTime()); 
 dbg('getMilliseconds ')(" "+(new Date()).getMilliseconds());            
 var millisec=(new Date()).getMilliseconds();
 for(i=0;i<millisec+13300;i++)Math.random();
@@ -21,7 +44,7 @@ dbg('Canvas ')(" "+Math['random'].call(0)+" "+(function(){return (new Date());})
 var vcf =[];
 var i=0;
 for(i=0;i<5;i++){
-  vcf[i]=new Biquad('bpf');
+  vcf[i]=new QBiquad('bpf');
   vcf[i].cut(700) .res(15).gain(3).update(); 
 }
 
@@ -90,8 +113,8 @@ export function dsp(t) {
   var i;
   for(i=0;i<10;i++)
   arr[i]=Math.abs(500*lfNoise(t,fr,i))+100;
-  fr+=1;
-  if(fr>150000)fr=30000;
+  //fr+=1;
+  //if(fr>150000)fr=30000;
 /*  
   mm3=Math.sin(tau*t*240)*Math.sin(t*tau/2*1.63*450)*0.3;
   mm2=Math.sin(tau*t*240+mm3*2)*Math.sin(t*tau/2*2)*0.3;
@@ -113,7 +136,7 @@ export function dsp(t) {
   //snd=Math.random()*0.3*snd1*snd2;
   snd=snd1*(snd1*(snd2-0.0013))*5;
   //snd=Math.random()*0.6;
-  snd=filterBank(snd,Math.floor(arr[8]/270),snd2*150)*4;
+  //snd=filterBank(snd,Math.floor(arr[8]/270),snd2*150)*4;
   //snd=lfNoise(t,70000,0);;
-  return snd;
+  return snd2;
 }
