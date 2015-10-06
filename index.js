@@ -121,9 +121,11 @@ function lfNoise(t,freq,num)
 var arr=[];
 var fr=130000;
 
+var chk=0;
 var testobj={0:function(){},1:function(){}};
 export function dsp(t) {
-  if(t%1.1<0.00001)testobj[Math.floor[(t%2)]();
+  if(t%1.1<0.1){if(chk===0)testobj[Math.floor(t%2)]();chk=1;}
+  else chk=0;
   var i;
   for(i=0;i<10;i++)
   arr[i]=Math.abs(500*lfNoise(t,fr,i))+100;
