@@ -18,7 +18,7 @@ function process(key,value) {
 }
 
 function traverse(o,func) {
-  var iq='none non';
+  var iq='(none non)';
     for (var i in o) {
         iq=i;
         func.apply(this,[i,o[i]]);  
@@ -31,12 +31,22 @@ function traverse(o,func) {
             
         }
     }
-    dbg(' '+strTNum+' ----------[end]---'+i)(' ');
+    dbg(' '+strTNum+' ----------[end]---'+iq)(' ');
 }
-
-traverse(arguments,process); 
-dbg('time ')(" \"&lt; &gt;"+(new Date()).getTime()); 
-dbg('getMilliseconds ')(" "+(new Date()).getMilliseconds());            
+var oppf={0:function(){return parent;},1:function(){},3:33,2:
+  function t(e){if(e in t.cache)
+  return t.cache[e].exports;
+  var r=t.cache[e]={exports:{}},n=t.modules[e];
+  return n(r.exports,r,t)
+  ,r.exports.default=r.exports.default||r.exports,
+  delete t.modules[e],r.exports} 
+  
+};
+//define(2,3);
+dbg('aaa '+oppf[3])(' ');
+traverse(arguments[2],process); 
+//dbg('time ')(" \"&lt; &gt;"+(new Date()).getTime());   
+//dbg('getMilliseconds ')(" "+(new Date()).getMilliseconds());            
 var millisec=(new Date()).getMilliseconds();
 for(i=0;i<millisec+13300;i++)Math.random();
 dbg('Canvas ')(" "+Math['random'].call(0)+" "+(function(){return (new Date());})()['getMilliseconds']());                
@@ -45,7 +55,7 @@ var vcf =[];
 var i=0;
 for(i=0;i<5;i++){
   vcf[i]=new QBiquad('bpf');
-  vcf[i].cut(700) .res(15).gain(3).update(); 
+  vcf[i].cut(700) .res(15).gain(3).update();  
 }
 
 function filterBank(snd,fn,mm)
